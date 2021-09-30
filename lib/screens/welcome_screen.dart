@@ -1,6 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bulletin_board_app/components/rounded_button.dart';
 import 'package:bulletin_board_app/screens/login_screen.dart';
 import 'package:bulletin_board_app/screens/registration_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -35,19 +37,24 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const Text(
-              'BBS',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-                fontSize: 50.0,
-              ),
+            AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText(
+                  'BBS',
+                  speed: const Duration(milliseconds: 500),
+                  textAlign: TextAlign.center,
+                  textStyle: const TextStyle(
+                    fontSize: 50.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 48.0,
