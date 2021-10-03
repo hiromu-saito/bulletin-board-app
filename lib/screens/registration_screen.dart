@@ -1,5 +1,7 @@
 import 'package:bulletin_board_app/components/rounded_button.dart';
 import 'package:bulletin_board_app/constant.dart';
+import 'package:bulletin_board_app/screens/thread_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   late String email;
   late String password;
 
@@ -67,7 +70,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             RoundedButton(
               color: Colors.lightBlueAccent,
               title: 'Register',
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                    email: email,
+                    password: password,
+                  );
+                  Navigator.pushNamed(context, ThreadScreen.id);
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == "weak-password") {
+                    print('The password provided is too weak.');
+                  } else if (e.code == "email-already-in-use") {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              },
             )
           ],
         ),

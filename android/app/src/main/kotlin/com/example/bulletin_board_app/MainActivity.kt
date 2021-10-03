@@ -1,6 +1,6 @@
-package com.example.bulletin_board_app
+package co.HiromuSaito.bulletin_board
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity : FlutterActivity() {
 }
