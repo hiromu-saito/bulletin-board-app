@@ -1,5 +1,7 @@
 import 'package:bulletin_board_app/components/rounded_button.dart';
 import 'package:bulletin_board_app/constant.dart';
+import 'package:bulletin_board_app/screens/thread_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,7 +67,22 @@ class _LoginScreenState extends State<LoginScreen> {
             RoundedButton(
               color: Colors.lightBlueAccent,
               title: 'Log in',
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  UserCredential userCredential =
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: email,
+                    password: password,
+                  );
+                  Navigator.pushNamed(context, ThreadScreen.id);
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'user-not-found') {
+                    print('No user found for that email.');
+                  } else if (e.code == 'wrong-password') {
+                    print('Wrong password provided for that user.');
+                  }
+                }
+              },
             )
           ],
         ),
