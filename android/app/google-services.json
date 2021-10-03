@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "184213739050",
+    "project_id": "bulletin-board-7f1e8",
+    "storage_bucket": "bulletin-board-7f1e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184213739050:android:c2d58a0c380fb7060a9553",
+        "android_client_info": {
+          "package_name": "co.HiromuSaito.bulletin_board"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184213739050-o0ft5nj552fv99mg69k1ubckvcs7g8bm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvrTF6bRZIkWI7GtYZeKsAgiiyq9XRPvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184213739050-o0ft5nj552fv99mg69k1ubckvcs7g8bm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
