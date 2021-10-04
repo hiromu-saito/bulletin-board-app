@@ -13,6 +13,7 @@ class ThreadListScreen extends StatefulWidget {
 
 class _ThreadListScreenState extends State<ThreadListScreen> {
   bool _saving = false;
+  CollectionReference thread = FirebaseFirestore.instance.collection('thread');
   List<DocumentSnapshot> documentList = [];
 
   @override
@@ -22,8 +23,7 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
   }
 
   void getThreadDate() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('thread').get();
+    final snapshot = await thread.get();
     setState(() {
       documentList = snapshot.docs;
     });
@@ -93,9 +93,10 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
                     ),
                     actions: [
                       TextButton(
-                        onPressed: () {
-                          //TODO 削除処理実装
-                          print('TODO 削除処理');
+                        onPressed: () async {
+                          await thread.doc(documentList[index].id).delete();
+                          Navigator.pop(context);
+                          getThreadDate();
                         },
                         child: const Text(
                           'OK',
