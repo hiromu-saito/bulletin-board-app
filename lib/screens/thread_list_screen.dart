@@ -1,3 +1,4 @@
+import 'package:bulletin_board_app/screens/thread_add_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +36,8 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
       inAsyncCall: _saving,
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: true,
           automaticallyImplyLeading: false,
+          centerTitle: true,
           title: const Text(
             'BBS',
             style: TextStyle(
@@ -115,8 +116,7 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            //TODO モーダル表示
-            print('TODO　モーダル表示');
+            Navigator.pushNamed(context, ThreadAddScreen.id);
           },
         ),
       ),
