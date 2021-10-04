@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -12,6 +13,21 @@ class ThreadListScreen extends StatefulWidget {
 
 class _ThreadListScreenState extends State<ThreadListScreen> {
   bool _saving = false;
+  List<DocumentSnapshot> documentList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getThreadDate();
+  }
+
+  void getThreadDate() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('thread').get();
+    setState(() {
+      documentList = snapshot.docs;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +72,51 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
           ],
         ),
         backgroundColor: Colors.white,
-        body: Container(
-          child: Text('ThreadScreen'),
+        body: ListView.separated(
+          separatorBuilder: (context, index) {
+            return const Divider(
+              thickness: 0.8,
+            );
+          },
+          itemCount: documentList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text(documentList[index]['threadName']),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text(
+                      'delete?',
+                      textAlign: TextAlign.center,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          //TODO 削除処理実装
+                          print('TODO 削除処理');
+                        },
+                        child: const Text(
+                          'OK',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            //TODO モーダル表示
+            print('TODO　モーダル表示');
+          },
         ),
       ),
     );
