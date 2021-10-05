@@ -1,4 +1,5 @@
 import 'package:bulletin_board_app/screens/thread_add_screen.dart';
+import 'package:bulletin_board_app/screens/thread_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class ThreadListScreen extends StatefulWidget {
   const ThreadListScreen({Key? key}) : super(key: key);
-  static const String id = '/thread';
+  static const String id = '/thread_list';
 
   @override
   _ThreadListScreenState createState() => _ThreadListScreenState();
@@ -49,27 +50,28 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.redAccent),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.redAccent),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    _saving = true;
+                  });
+                  await FirebaseAuth.instance.signOut();
+                  setState(() {
+                    _saving = false;
+                  });
+                  Navigator.pushNamed(context, '/');
+                },
+                child: const Text(
+                  'Log out',
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                  onPressed: () async {
-                    setState(() {
-                      _saving = true;
-                    });
-                    await FirebaseAuth.instance.signOut();
-                    setState(() {
-                      _saving = false;
-                    });
-                    Navigator.pushNamed(context, '/');
-                  },
-                  child: const Text(
-                    'Log out',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  )),
-            )
+                ),
+              ),
+            ),
           ],
         ),
         backgroundColor: Colors.white,
@@ -82,6 +84,10 @@ class _ThreadListScreenState extends State<ThreadListScreen> {
           itemCount: documentList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, ThreadScreen.id,
+                    arguments: documentList[index]['threadId']);
+              },
               title: Text(documentList[index]['threadName']),
               trailing: IconButton(
                 icon: const Icon(Icons.delete),

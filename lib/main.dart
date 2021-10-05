@@ -1,6 +1,7 @@
 import 'package:bulletin_board_app/screens/login_screen.dart';
 import 'package:bulletin_board_app/screens/registration_screen.dart';
 import 'package:bulletin_board_app/screens/thread_list_screen.dart';
+import 'package:bulletin_board_app/screens/thread_screen.dart';
 import 'package:bulletin_board_app/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class BulletinBoard extends StatelessWidget {
         RegistrationScreen.id: (context) => RegistrationScreen(),
         ThreadListScreen.id: (context) => ThreadListScreen(),
         ThreadAddScreen.id: (context) => ThreadAddScreen(),
+        ThreadScreen.id: (context) => ThreadScreen()
       },
     );
   }
