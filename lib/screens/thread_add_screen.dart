@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ThreadAddScreen extends StatefulWidget {
-  const ThreadAddScreen({Key? key}) : super(key: key);
   static const String id = '/thread_add';
 
   @override

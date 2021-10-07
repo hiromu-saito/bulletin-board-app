@@ -82,39 +82,7 @@ class _ThreadScreenState extends State<ThreadScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('posts')
-                  .where('threadId', isEqualTo: threadId)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                final posts = snapshot.data!.docs.reversed.toList();
-                posts.sort((a, b) => b['createdAt'].compareTo(a['createdAt']));
-                List<MessageBubble> messageBubbles = [];
-                for (int i = 0; i < posts.length; i++) {
-                  final messageText = posts[i]['message'];
-                  final messageSender = posts[i]['sender'];
-                  final currentUser = loggedInUser!.email;
-
-                  final messageBubble = MessageBubble(
-                    sender: messageSender,
-                    text: messageText,
-                    isMe: currentUser == messageSender,
-                  );
-
-                  messageBubbles.add(messageBubble);
-                }
-                return Expanded(
-                  child: ListView(
-                    reverse: true,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-                    children: messageBubbles,
-                  ),
-                );
-              },
-            ),
+            MessagesStream(threadId: threadId),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -150,6 +118,47 @@ class _ThreadScreenState extends State<ThreadScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MessagesStream extends StatelessWidget {
+  MessagesStream({required this.threadId});
+
+  int threadId;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore
+          .collection('posts')
+          .where('threadId', isEqualTo: threadId)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlueAccent,
+            ),
+          );
+        }
+        final posts = snapshot.data!.docs.reversed.toList();
+        posts.sort((a, b) => b['createdAt'].compareTo(a['createdAt']));
+        List<MessageBubble> messageBubbles = posts.map((post) {
+          return MessageBubble(
+            sender: post['sender'],
+            text: post['message'],
+            isMe: post['sender'] == loggedInUser!.email,
+          );
+        }).toList();
+        return Expanded(
+          child: ListView(
+            reverse: true,
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            children: messageBubbles,
+          ),
+        );
+      },
     );
   }
 }
